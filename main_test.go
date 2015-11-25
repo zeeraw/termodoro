@@ -38,7 +38,7 @@ func TestGetStartTime(t *testing.T) {
 func TestGetPomodoroDuration(t *testing.T) {
 	po := NewPomodoro()
 	SetStartTime(po)
-	time.Sleep(5 * time.Second)
+	time.Sleep(1 * time.Second)
 	pd := GetPomodoroDuration(po)
 	t.Log(pd)
 }

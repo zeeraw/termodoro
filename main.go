@@ -7,16 +7,16 @@ import (
 
 const (
 	// PomodoroLength defines the default length of a pomodoro
-	// should be later sourced via .termodororc
+	// in the future this value will be sourced via a .pomodororc file
 	PomodoroLength time.Duration = 25
 
-	// Layout represents the default time layout format to use
+	// Layout represents the default time layout format to use for time functions
 	Layout string = "Jan 1 2006 at 15:04:01"
 )
 
 func main() {}
 
-// Pomodoro struct, not in use right now but will be, eventually
+// Pomodoro defines the blueprint for a pomodoro
 type Pomodoro struct {
 	StartTime        time.Time
 	PomodoroActive   bool
@@ -29,7 +29,7 @@ func NewPomodoro() *Pomodoro {
 	return &Pomodoro{PomodoroActive: true}
 }
 
-// GetCurrentTime gets the current time
+// GetCurrentTime is an exported wrapper for the time.Now() function
 func GetCurrentTime() (t time.Time) {
 	t = time.Now()
 	return
@@ -42,7 +42,7 @@ func GetPomodoroDuration(p *Pomodoro) (t time.Duration) {
 }
 
 // SetStartTime sets the starting time of the pomodoro
-// idealy I want to use this to set pomodoros in advance
+// later will be used to also set pomodoros in advance
 func SetStartTime(p *Pomodoro) {
 	p.StartTime = GetCurrentTime()
 	fmt.Println("Pomodoro started at: ", p.StartTime.Format(Layout))
