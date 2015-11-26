@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	layout string = "Jan 1 2006 at 15:04:01"
+	layout string = "Jan 01 2006 at 15:04:01"
 )
 
 func TestNewPomodoro(t *testing.T) {
@@ -53,6 +53,14 @@ func TestPomodoroTimer(t *testing.T) {
 	var duration time.Duration = 1
 	ti := PomodoroTimer(duration, time.Microsecond)
 	if ti != false {
+		t.Fail()
+	}
+}
+
+func TestPomodoroFormatDate(t *testing.T) {
+	date := PomodoroFormatDate(2015, time.January, 1, 0, 0)
+	t.Log(date)
+	if date != "Jan 01 2015 at 00:00:01" {
 		t.Fail()
 	}
 }

@@ -11,7 +11,7 @@ const (
 	PomodoroLength time.Duration = 25
 
 	// Layout represents the default time layout format to use for time functions
-	Layout string = "Jan 1 2006 at 15:04:01"
+	Layout string = "Jan 01 2006 at 15:04:01"
 )
 
 func main() {}
@@ -67,5 +67,11 @@ func PomodoroTimer(length, unit time.Duration) (active bool) {
 	<-timer.C
 	active = false
 	fmt.Println("Pomodoro ended")
+	return
+}
+
+func PomodoroFormatDate(year int, month time.Month, day, hour, min int) (formatedDate string) {
+	date := time.Date(year, month, day, hour, min, 0, 0, time.Local)
+	formatedDate = date.Format(Layout)
 	return
 }
