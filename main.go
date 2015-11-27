@@ -1,4 +1,4 @@
-package main
+package pomodoro
 
 import (
 	"fmt"
@@ -61,8 +61,8 @@ func AddPomodoro(t time.Time) (pomodoro time.Time) {
 	return
 }
 
-// PomodoroTimer counts down the time until active pomodoro ends
-func PomodoroTimer(length, unit time.Duration) (active bool) {
+// Timer counts down the time until active pomodoro ends
+func Timer(length, unit time.Duration) (active bool) {
 	timer := time.NewTimer(length * unit)
 	<-timer.C
 	active = false
@@ -70,8 +70,9 @@ func PomodoroTimer(length, unit time.Duration) (active bool) {
 	return
 }
 
-func PomodoroFormatDate(year int, month time.Month, day, hour, min int) (formatedDate string) {
-	date := time.Date(year, month, day, hour, min, 0, 0, time.Local)
+// FormatDate is a wrapper function that allows easier setting of dates
+func FormatDate(year int, month time.Month, day, hour, min int) (formatedDate string, date time.Time) {
+	date = time.Date(year, month, day, hour, min, 0, 0, time.Local)
 	formatedDate = date.Format(Layout)
 	return
 }
