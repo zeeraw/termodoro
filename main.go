@@ -18,15 +18,23 @@ func main() {}
 
 // Pomodoro defines the blueprint for a pomodoro
 type Pomodoro struct {
-	StartTime        time.Time
-	PomodoroActive   bool
-	PomodoroEnd      time.Time
-	PomodoroDuration time.Time
+	Start   time.Time
+	Active  bool
+	End     time.Time
+	Elapsed time.Time
 }
 
 // NewPomodoro creates a pomodoro object in memory
 func NewPomodoro() *Pomodoro {
-	return &Pomodoro{PomodoroActive: true}
+	return &Pomodoro{Active: true}
+}
+
+// NewDefaultPomodoro sets the default values for a new pomodoro
+func NewDefaultPomodoro() (n *Pomodoro) {
+	n = NewPomodoro()
+	SetStartTime(n)
+	AddPomodoroDuration(n)
+	return n
 }
 
 // GetCurrentTime is an exported wrapper for the time.Now() function
@@ -37,27 +45,25 @@ func GetCurrentTime() (t time.Time) {
 
 // GetPomodoroDuration calculates how much time has passed since the pomodoro started
 func GetPomodoroDuration(p *Pomodoro) (t time.Duration) {
-	t = time.Since(p.StartTime)
+	t = time.Since(p.Start)
 	return
+}
+
+// AddPomodoroDuration sets the length of the pomodoro
+func AddPomodoroDuration(p *Pomodoro) {
+	p.End = p.Start.Add(PomodoroLength * time.Minute)
 }
 
 // SetStartTime sets the starting time of the pomodoro
 // later will be used to also set pomodoros in advance
 func SetStartTime(p *Pomodoro) {
-	p.StartTime = GetCurrentTime()
-	fmt.Println("Pomodoro started at: ", p.StartTime.Format(Layout))
-	return
+	p.Start = GetCurrentTime()
+	fmt.Println("Pomodoro started at: ", p.Start.Format(Layout))
 }
 
 // GetStartTime gets the time at which the pomodoro started
 func GetStartTime(p *Pomodoro) (st time.Time) {
-	st = p.StartTime
-	return
-}
-
-// AddPomodoro calculates when the next Pomodoro should end
-func AddPomodoro(t time.Time) (pomodoro time.Time) {
-	pomodoro = t.Add(PomodoroLength * time.Minute)
+	st = p.Start
 	return
 }
 
@@ -74,5 +80,19 @@ func Timer(length, unit time.Duration) (active bool) {
 func FormatDate(year int, month time.Month, day, hour, min int) (formatedDate string, date time.Time) {
 	date = time.Date(year, month, day, hour, min, 0, 0, time.Local)
 	formatedDate = date.Format(Layout)
+	return
+}
+
+// FormatOutput returns the pomodoros as a slice of strings
+func FormatOutput(p *Pomodoro) (output []string) {
+	st := p.Start.Format(Layout)
+	ed := p.End.Format(Layout)
+	ac := p.Active
+	var state string
+	if ac == true {
+		state = "active"
+	}
+
+	output = []string{state, st, ed}
 	return
 }
